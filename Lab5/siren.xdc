@@ -10,13 +10,20 @@ set_property -dict { PACKAGE_PIN G17 IOSTANDARD LVCMOS33 } [get_ports { dac_SDIN
 
 set_property -dict { PACKAGE_PIN C17 IOSTANDARD LVCMOS33 } [get_ports { dac_MCLK }]; #IO_L20N_T3_A19_15 Sch=ja[1]
 
-NET "bt_square" LOC = B18;
+set_property -dict { PACKAGE_PIN M18 IOSTANDARD LVCMOS33 } [get_ports { bt_square }]; 
 
-NET "s_switch(7)" LOC = R17;
-NET "s_switch(6)" LOC = N17;
-NET "s_switch(5)" LOC = L13;
-NET "s_switch(4)" LOC = L14;
-NET "s_switch(3)" LOC = K17;
-NET "s_switch(2)" LOC = K18;
-NET "s_switch(1)" LOC = H18;
-NET "s_switch(0)" LOC = G18;
+set_property -dict { PACKAGE_PIN J15 IOSTANDARD LVCMOS33 } [get_ports { s_switch(7) }];
+
+set_property -dict { PACKAGE_PIN L16 IOSTANDARD LVCMOS33 } [get_ports { s_switch(6) }]; 
+
+set_property -dict { PACKAGE_PIN M13 IOSTANDARD LVCMOS33 } [get_ports { s_switch(5) }]; 
+
+set_property -dict { PACKAGE_PIN R15 IOSTANDARD LVCMOS33 } [get_ports { s_switch(4) }]; 
+
+set_property -dict { PACKAGE_PIN R17 IOSTANDARD LVCMOS33 } [get_ports { s_switch(3) }]; 
+
+set_property -dict { PACKAGE_PIN T18 IOSTANDARD LVCMOS33 } [get_ports { s_switch(2) }]; 
+
+set_property -dict { PACKAGE_PIN U18 IOSTANDARD LVCMOS33 } [get_ports { s_switch(1) }]; 
+
+set_property -dict { PACKAGE_PIN R13 IOSTANDARD LVCMOS33 } [get_ports { s_switch(0) }]; 
