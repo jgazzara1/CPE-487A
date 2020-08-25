@@ -17,25 +17,7 @@ ARCHITECTURE Behavioral OF tone IS
 	SIGNAL quad : std_logic_vector (1 DOWNTO 0); -- current quadrant of phase
 	SIGNAL index : signed (15 DOWNTO 0); -- index into current quadrant
 BEGIN
-	-- This process adds "pitch" to the current phase every sampling period. Generates
-	-- an unsigned 16-bit sawtooth waveform. Frequency is determined by pitch. For
-	-- example when pitch=1, then frequency will be 0.745 Hz. When pitch=16,384, frequency
-	-- will be 12.2 kHz.
-	cnt_pr : PROCESS
-	BEGIN
-		WAIT UNTIL rising_edge(clk);
-		count <= count + pitch;
-	END PROCESS;
-	quad <= std_logic_vector (count (15 DOWNTO 14)); -- splits count range into 4 phases
-	index <= signed ("00" & count (13 DOWNTO 0)); -- 14-bit index into the current phase
-	-- This select statement converts an unsigned 16-bit sawtooth that ranges from 65,535
-	-- into a signed 12-bit triangle wave that ranges from -16,383 to +16,383
-	WITH quad SELECT
-	data <= index WHEN "00", -- 1st quadrant
-	        16383 - index WHEN "01", -- 2nd quadrant
-	        0 - index WHEN "10", -- 3rd quadrant
-	        index - 16383 WHEN OTHERS; -- 4th quadrant
-sel : process(bt_zero,index)
+sel : PROCESS(bt_zero,index)
 BEGIN
     if bt_zero = '1' then
         if quad = "00" then data <= to_signed(600,16);
@@ -50,6 +32,16 @@ BEGIN
         else data <= index - 16383;
         end if;
     end if;
-end process;
+END process;
+	quad <= std_logic_vector (count (15 DOWNTO 14)); -- splits count range into 4 phases
+	index <= signed ("00" & count (13 DOWNTO 0)); -- 14-bit index into the current phase
+	-- This select statement converts an unsigned 16-bit sawtooth that ranges from 65,535
+	-- into a signed 12-bit triangle wave that ranges from -16,383 to +16,383
+	WITH quad SELECT
+	data <= index WHEN "00", -- 1st quadrant
+	        16383 - index WHEN "01", -- 2nd quadrant
+	        0 - index WHEN "10", -- 3rd quadrant
+	        index - 16383 WHEN OTHERS; -- 4th quadrant
+
 END Behavioral;
 
