@@ -13,8 +13,8 @@ ENTITY bat_n_ball IS
         red : OUT STD_LOGIC;
         green : OUT STD_LOGIC;
         blue : OUT STD_LOGIC;
-        ball_speed: in STD_LOGIC_VECTOR(9 DOWNTO 0);
-        count: inout Std_logic_vector (7 downto 0)
+        ball_speed: IN STD_LOGIC_VECTOR (10 DOWNTO 0);
+        count: INOUT Std_logic_vector (8 DOWNTO 0)
     );
 END bat_n_ball;
 
@@ -32,7 +32,7 @@ ARCHITECTURE Behavioral OF bat_n_ball IS
     -- bat vertical position
     CONSTANT bat_y : STD_LOGIC_VECTOR(10 DOWNTO 0) := CONV_STD_LOGIC_VECTOR(500, 11);
     -- current ball motion - initialized to (+ ball_speed) pixels/frame in both X and Y directions
-    SIGNAL ball_x_motion, ball_y_motion : STD_LOGIC_VECTOR(10 DOWNTO 0) := ball_speed;
+    SIGNAL ball_x_motion, ball_y_motion : STD_LOGIC_VECTOR(10 DOWNTO 0):= ball_speed;
 BEGIN
     red <= NOT bat_on; -- color setup for red ball and cyan bat on white background
     green <= NOT ball_on;
