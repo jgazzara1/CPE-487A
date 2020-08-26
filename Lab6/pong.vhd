@@ -16,8 +16,8 @@ ENTITY pong IS
         ADC_SDATA1 : IN STD_LOGIC;
         ADC_SDATA2 : IN STD_LOGIC;
     btn0 : IN STD_LOGIC; -- button to initiate serve
-    sw: in STD_LOGIC_VECTOR(4 DOWNTO 0);
-    counter: inout Std_logic_vector(7 downto 0));
+    sw: IN STD_LOGIC_VECTOR(5 DOWNTO 0);
+    counter: INOUT Std_logic_vector(8 DOWNTO 0));
 END pong;
 
 ARCHITECTURE Behavioral OF pong IS
@@ -29,8 +29,8 @@ ARCHITECTURE Behavioral OF pong IS
     SIGNAL batpos : STD_LOGIC_VECTOR (10 DOWNTO 0); -- 9 downto 0
     SIGNAL serial_clk, sample_clk : STD_LOGIC;
     SIGNAL adout : STD_LOGIC_VECTOR (11 DOWNTO 0);
-    SIGNAL ball_spd: STD_LOGIC_VECTOR(9 DOWNTO 0);
-    SIGNAL count : STD_LOGIC_VECTOR (9 DOWNTO 0); -- counter to generate ADC clocks
+    SIGNAL ball_spd: STD_LOGIC_VECTOR(10 DOWNTO 0);
+    SIGNAL count : STD_LOGIC_VECTOR (8 DOWNTO 0); -- counter to generate ADC clocks
     COMPONENT adc_if IS
         PORT (
             SCK : IN STD_LOGIC;
@@ -51,8 +51,8 @@ ARCHITECTURE Behavioral OF pong IS
             red : OUT STD_LOGIC;
             green : OUT STD_LOGIC;
             blue : OUT STD_LOGIC;
-            ball_speed: STD_LOGIC_VECTOR(9 DOWNTO 0);
-            count: inout Std_logic_vector(7 downto 0)
+            ball_speed: STD_LOGIC_VECTOR(10 DOWNTO 0);
+            count: inout Std_logic_vector(8 downto 0)
         );
     END COMPONENT;
     COMPONENT vga_sync IS
@@ -87,13 +87,13 @@ BEGIN
     END PROCESS;
     serial_clk <= NOT count(4); -- 1.5 MHz serial clock for ADC
     ADC_SCLK <= serial_clk;
-    sample_clk <= count(9); -- sampling clock is low for 16 SCLKs
+    sample_clk <= count(8); -- sampling clock is low for 16 SCLKs
     ADC_CS <= sample_clk;
     -- Multiplies ADC output (0-4095) by 5/32 to give bat position (0-640)
     --batpos <= ('0' & adout(11 DOWNTO 3)) + adout(11 DOWNTO 5);
     batpos <= ("00" & adout(11 DOWNTO 3)) + adout(11 DOWNTO 4);
     -- 512 + 256 = 768
-    ball_spd <= ("00000" & sw) +1;
+    ball_spd <= ("00000" & sw) +1 ;
     adc : adc_if
     PORT MAP(-- instantiate ADC serial to parallel interface
         SCK => serial_clk, 
